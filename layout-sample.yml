@@ -1,0 +1,96 @@
+# testcard-generator card layout file
+output: # set output format
+  tile: # for tile layout
+    width: 3       # (default: 3) a page row has <width> cards
+    height: 3      # (default: 3) a page column has <height> cards
+    scale: 0.90    # (default: 0.9) only PDF format.
+                   # cards puts on a page as well as filled automatically.
+                   # if scale = 1, images set width or height as same as PDF page width or height.
+                   # scale parameter can adjust size by times <scale> and shrink (<scale> < 1.0)
+    interspace: 10 # (default: 10) make <interspace> pixels between each cards.
+    lu: normal     # (default: normal) left-upper point. normal or center are available.
+  format: pdf      # (default: pdf) save format. pdf or png are available.
+card: # a card definitions
+  size: # 150dpi = 372 x 520 as default
+    width: 372
+    height: 520
+  border:
+    width: 2          # (default: 2) draw border line for a card (if you want to ignore, set 0)
+    color: '#000000'  # (default: #000000) border line drawing color
+  layers:
+    # render contents from top to bottom (overwrite)
+    # -------------------------------------------------------------------------------------------------------
+    - type: image                 # [required] show what drawing as type. now only "png" is supported
+      source: sample/icon01.png   # read fixed resources
+      always: yes                 # never read data row, always should be true (or yes)
+      x: 0                        # [required] left-top x-origin
+      y: 15                       # [required] left-top y-origin
+      width: 150                  # image width (expands and shrinks)
+      height: 150                 # image width (expands and shrinks)
+    # -------------------------------------------------------------------------------------------------------
+    - type: image                 # [required] show what drawing as type. now only "png" is supported
+      ref: icon                   # read image-path from data source "icon" column for each card
+      x: 290                      # [required] left-top x-origin
+      y: 435                      # [required] left-top y-origin
+      width: 80                   # image width (expands and shrinks)
+      height: 80                  # image width (expands and shrinks)
+    # -------------------------------------------------------------------------------------------------------
+    - name: VP                    # name to understand
+      type: linetext              # [required] one-line centerized text drawing
+      ref: vp                     # read text from data source "vp" column for each card
+      x: 45                       # (default: 0) left-top x-origin
+      y: 20                       # (default: 0) left-top y-origin
+      width: 60                  # [required] string width
+      height: 80                  # [required] string height
+      maxfontsize: 60             # (default: 24) maximum font size. if out of bounds, font will be shrinked
+      bold: yes                   # (default: no) bold fort or not
+      color: '#FFFFFF'            # (default: '#000000') set string color by RGB Hex same as CSS
+      shadowcolor: '#888888'      # (default: not used) if you want to add shadow, set their color
+      shadow_dx: 4                # (default: 4) how pixel slided to draw shadow
+      shadow_dy: 4                # (default: 4) how pixel slided to draw shadow
+    # -------------------------------------------------------------------------------------------------------
+    - name: titlebox              # name to understand
+      type: rectangle             # [required] draw rectangle
+      always: yes                 # never read data row, always should be true (or yes)
+      x: 130                      # (default: 0) left-top x-origin
+      y: 20                       # (default: 0) left-top y-origin
+      width: 230                  # [required] string width
+      height: 60                  # [required] string height
+      fillcolor: "#FFE4E1"        # (default: no, not filled) Fill rectangle color
+      bordercolor: "#FF3DA3"      # (default: no, not draw) figure border color
+      border: 1                   # (default: 0) if you want to set border width pixel, set here
+    # -------------------------------------------------------------------------------------------------------
+    - name: titletext             # name to understand
+      type: linetext              # [required] one-line centerized text drawing
+      ref: title                  # read text from data source "vp" column for each card
+      x: 130                      # (default: 0) left-top x-origin
+      y: 20                       # (default: 0) left-top y-origin
+      width: 230                  # [required] string width
+      height: 60                  # [required] string height
+      maxfontsize: 32             # (default: 24) maximum font size. if out of bounds, font will be shrinked
+      bold: yes                   # (default: no) bold fort or not
+      color: '#333333'            # (default: '#000000') set string color by RGB Hex same as CSS
+    # -------------------------------------------------------------------------------------------------------
+    - name: textbox               # name to understand
+      type: rectangle             # [required] draw rectangle
+      always: yes                 # never read data row, always should be true (or yes)
+      x: 10                       # (default: 0) left-top x-origin
+      y: 330                      # (default: 0) left-top y-origin
+      width: 350                  # [required] string width
+      height: 180                 # [required] string height
+      fillcolor: "#FFE4E1A0"      # (default: no, not filled) Fill rectangle color *WITH ALPHA*
+      bordercolor: "#FF3DA3"      # (default: no, not draw) figure border color
+      border: 3                   # (default: 0) if you want to set border width pixel, set here
+      alpha_enable: yes           # (default: no) if you want to use alpha-blending, set it as yes
+    # -------------------------------------------------------------------------------------------------------
+    - name: titletext             # name to understand
+      type: text                  # [required] multi-line text drawing supported max-widht and height
+      ref: description            # read text from data source "desciption" column for each card
+      x: 15                       # (default: 0) left-top x-origin
+      y: 335                      # (default: 0) left-top y-origin
+      maxwidth: 340               # (default: no) if you want clip the drawing string, set its maximum pixels
+      maxheight: 170              # (default: no) if you want clip the drawing string, set its maximum pixels
+      fontsize: 16                # (default: 24) font size to use. but if out of bounds, less the sizes may be used
+      bold: yes                   # (default: no) bold fort or not
+      color: '#000000'            # (default: '#000000') set string color by RGB Hex same as CSS
+      breakseparator: ']'         # (default: '') after the charactor, line is broken automatically
