@@ -20,6 +20,19 @@ Note: Not it is alpha version so documentation is not completed.
 Moreover, how to use may be changed in future.
 ```
 
+## Example
+
+From [layout yml file](layout-sample.yml) and [card data csv file](data-sample.csv), following image(s) and PDF file can be generated.
+
+* PNG Image
+
+![](output0001.png)
+
+![](output0002.png)
+
+* [PDF file for print](output.pdf)
+
+
 ## Preconditions
 
 I tested it on ubuntu 18.04 and Python 3.6.5 (virtualenv).

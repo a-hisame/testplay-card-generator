@@ -13,9 +13,6 @@ sys.path.append(here)
 
 from drawing.engine import TestCardGeneratorEngine
 
-import logging
-logging.basicConfig(level=logging.DEBUG)
-
 
 def _parse_args(argv=sys.argv[1:]):
     parser = argparse.ArgumentParser(
