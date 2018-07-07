@@ -11,7 +11,7 @@ import argparse
 here = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(here)
 
-from drawing.engine import TestCardGeneratorEngine
+from tcgen.engine import TestCardGeneratorEngine
 
 
 def _parse_args(argv=sys.argv[1:]):
