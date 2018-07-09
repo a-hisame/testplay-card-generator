@@ -7,8 +7,17 @@ import os
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
-_fontpath = os.path.join(os.path.dirname(__file__), 'NotoSansCJKjp-Light.ttf')
-_boldpath = os.path.join(os.path.dirname(__file__), 'NotoSansCJKjp-Bold.ttf')
+from . import staticdata
+
+__FONT_PATH = staticdata.staticfile_path(dict(
+    bold=os.path.join('fonts', 'NotoSansCJKjp-Bold.ttf'),
+    plain=os.path.join('fonts', 'NotoSansCJKjp-Light.ttf'),
+), True)
+
+
+def _fontpath(is_bold=False):
+    path = __FONT_PATH['bold'] if is_bold else __FONT_PATH['plain']
+    return path
 
 
 class CardCanvas:
@@ -65,7 +74,7 @@ class CardCanvas:
                   fontsize=24, minfontsize=4, fontdiff=2,
                   shadowcolor=None, shadow_dx=4, shadow_dy=4):
         ''' write text on draw objcet by keeping never over maxwidth pixel '''
-        fontpath = _boldpath if bold else _fontpath
+        fontpath = _fontpath(bold)
         font = ImageFont.truetype(fontpath, fontsize, encoding='utf-8')
         multiline = self._split_lines(font, text, maxwidth, breakseparator)
 
@@ -92,7 +101,7 @@ class CardCanvas:
                           bold=False, maxfontsize=24, minfontsize=4,
                           shadowcolor=None, shadow_dx=4, shadow_dy=4):
         ''' draw one line text in (x, y, width, height) bounding '''
-        fontpath = _boldpath if bold else _fontpath
+        fontpath = _fontpath(bold)
         bestfont = ImageFont.truetype(fontpath, minfontsize, encoding='utf-8')
         bestfontsize = minfontsize
         for fontsize in range(maxfontsize, minfontsize, -1):

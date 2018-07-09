@@ -1,0 +1,4 @@
+dotmap==1.2.20
+Pillow==5.2.0
+PyYAML==3.12
+reportlab==3.4.0

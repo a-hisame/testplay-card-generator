@@ -1,10 +1,11 @@
 # Testplay Card Generator
 
+(If you want to read Japanese document, [please click here](README_ja.md) ). 
+
 How do you do when you want to play card game but the card is nothing?
 
-Especially, if you were board game which uses several cards designer,
-you want to print out alpha-version card and try to adjust by using printed ones
-(I want to do).
+Especially, when you design your board game which uses several cards,
+you want to print out alpha-version card and try to adjust by using printed ones, don't you?
 
 I hope following for the test play cards generator.
 
@@ -14,6 +15,12 @@ I hope following for the test play cards generator.
 * Generate file easy to print, like pdf format
 
 This project can provide above features for you.
+
+
+## Notice
+
+*I assumed mainly tool user is Japanese so it explains how to use the tool by Japanese* .
+If you want to develop this project, read [README for develop](README_dev.md).
 
 ```
 Note: Not it is alpha version so documentation is not completed.
@@ -33,13 +40,22 @@ From [layout yml file](layout-sample.yml) and [card data csv file](data-sample.c
 * [PDF file for print](output.pdf)
 
 
-## Preconditions
+## Install
 
 I tested it on ubuntu 18.04 and Python 3.6.5 (virtualenv).
 
 ```
-pip install Pillow reportlab PyYAML DotMap
+# only use and install
+python scripts/install.py
+
+# setup development by virtualenv
+virtualenv .venv
+source .venv/bin/activate
+python scripts/install.py requirements-dev.txt
 ```
+
+
+## Preparation
 
 And you have to prepare `layout file (yml format)` , `data file (csv format)` .
 

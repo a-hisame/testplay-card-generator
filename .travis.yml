@@ -1,0 +1,8 @@
+language: python
+python:
+  - "3.6"
+install:
+  - python scripts/install.py requirements-dev.txt
+script: nosetests -s --exe
+branches:
+  except: /^(feature|try).*$/
