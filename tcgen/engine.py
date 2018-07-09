@@ -197,7 +197,7 @@ class TestCardGeneratorEngine:
                 continue
 
             try:
-                self.console('render: layer named {} (type={})'.format(
+                logger.debug('render: layer named {} (type={})'.format(
                              name, layer.type))
                 render_impl(canvas, layer, content)
             except Exception as e:

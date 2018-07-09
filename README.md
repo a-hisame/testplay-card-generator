@@ -1,6 +1,15 @@
 # Testplay Card Generator
 
-(If you want to read Japanese document, [please click here](README_ja.md) ). 
+[![Build Status](https://travis-ci.org/a-hisame/testplay-card-generator.svg?branch=develop)](https://travis-ci.org/a-hisame/testplay-card-generator)
+[![codecov](https://codecov.io/gh/a-hisame/testplay-card-generator/branch/master/graph/badge.svg)](https://codecov.io/gh/a-hisame/testplay-card-generator)
+[![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
+
+=> [日本語で読みたい方はこちら(README_ja.md).
+
+```
+Note: Not it is alpha version so documentation is not completed.
+Moreover, how to use may be changed in future.
+```
 
 How do you do when you want to play card game but the card is nothing?
 
@@ -17,19 +26,10 @@ I hope following for the test play cards generator.
 This project can provide above features for you.
 
 
-## Notice
-
-*I assumed mainly tool user is Japanese so it explains how to use the tool by Japanese* .
-If you want to develop this project, read [README for develop](README_dev.md).
-
-```
-Note: Not it is alpha version so documentation is not completed.
-Moreover, how to use may be changed in future.
-```
-
 ## Example
 
-From [layout yml file](layout-sample.yml) and [card data csv file](data-sample.csv), following image(s) and PDF file can be generated.
+From [layout yml file](layout-sample.yml) and [card data csv file](data-sample.csv),
+this project generates following image(s) and PDF file.
 
 * PNG Image
 
@@ -45,12 +45,14 @@ From [layout yml file](layout-sample.yml) and [card data csv file](data-sample.c
 I tested it on ubuntu 18.04 and Python 3.6.5 (virtualenv).
 
 ```
+# setup virtualenv
+virtualenv .venv
+source .venv/bin/activate
+
 # only use and install
 python scripts/install.py
 
-# setup development by virtualenv
-virtualenv .venv
-source .venv/bin/activate
+# if you are developer, needs to install development tools additionally
 python scripts/install.py requirements-dev.txt
 ```
 
@@ -59,7 +61,7 @@ python scripts/install.py requirements-dev.txt
 
 And you have to prepare `layout file (yml format)` , `data file (csv format)` .
 
-You can use `layout-sample.yml` and `data-sample.csv` for check to work the program on your computer well.
+You can use `layout-sample.yml` and `data-sample.csv` for checking to work the program on your local computer well.
 
 
 ## How to use
@@ -67,8 +69,7 @@ You can use `layout-sample.yml` and `data-sample.csv` for check to work the prog
 By following command you can run program and get the `output.pdf` file for printing.
 
 ```
-cd src
-python main.py --layout <your layout file> --data <your data file> --output output.pdf
+tcgen --layout <your layout file> --data <your data file> --output output.pdf
 ```
 
 ## Layout File
@@ -85,9 +86,9 @@ If you want to make the cards, read `layout-sample.yml` and `data.csv` and make 
 
 ## LICENSE
 
-This project itself is under [MIT LICENSE](LICENSE) .
+This project source codes and sample resources are under [MIT LICENSE](LICENSE) .
 
-But it contains Noto Font as default text rendering and the font licensed under the SIL Open Font License 1.1.
+But it contains Noto Font as default text rendering and the fonts are licensed under the SIL Open Font License 1.1.
 
-* [Noto Sans CJK JP Light](src/drawing/NotoSansCJKjp-Light.ttf) - https://www.google.com/get/noto/
-* [Noto Sans CJK JP Bold](src/drawing/NotoSansCJKjp-Bold.ttf) - https://www.google.com/get/noto/
+* [Noto Sans CJK JP Light](data/fonts/NotoSansCJKjp-Light.ttf) - https://www.google.com/get/noto/
+* [Noto Sans CJK JP Bold](data/fonts/NotoSansCJKjp-Bold.ttf) - https://www.google.com/get/noto/
