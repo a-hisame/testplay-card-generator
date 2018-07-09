@@ -25,6 +25,11 @@ def call_(val):
     pass
 
 
+def fail_():
+    ''' fail unittest forcely '''
+    ok_(False)
+
+
 def datapath(filename):
     ''' return absolute path for unittest localfile '''
     return os.path.join(os.path.dirname(__file__), 'data', filename)

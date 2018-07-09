@@ -61,7 +61,7 @@ class CardCanvas:
                   maxwidth=None, maxheight=None,
                   breakseparator='', bold=False,
                   fontsize=24, minfontsize=4, fontdiff=2,
-                  shadowcolor=None, shadow_dx=4, shadow_dy=4):
+                  shadowcolor=None, shadow_dx=4, shadow_dy=4, **kwignores):
         ''' write text on draw objcet by keeping never over maxwidth pixel '''
         fontpath = _fontpath(bold)
         font = ImageFont.truetype(fontpath, fontsize, encoding='utf-8')
@@ -88,7 +88,7 @@ class CardCanvas:
     def draw_oneline_text(self, text, x, y, width, height, color,
                           ignore_offset=True,
                           bold=False, maxfontsize=24, minfontsize=4,
-                          shadowcolor=None, shadow_dx=4, shadow_dy=4):
+                          shadowcolor=None, shadow_dx=4, shadow_dy=4, **kwignores):
         ''' draw one line text in (x, y, width, height) bounding '''
         fontpath = _fontpath(bold)
         bestfont = ImageFont.truetype(fontpath, minfontsize, encoding='utf-8')
@@ -128,7 +128,8 @@ class CardCanvas:
             context(self.draw)
 
     def draw_rect(self, x, y, width, height,
-                  bordercolor=None, fillcolor=None, border=1, alpha_enable=False):
+                  bordercolor=None, fillcolor=None,
+                  border=1, alpha_enable=False, **kwignores):
         ''' draw rectangle with border '''
         if fillcolor is not None:
             def _context(draw):
@@ -143,7 +144,8 @@ class CardCanvas:
                 self._alpha_context(_context, alpha_enable)
 
     def draw_ellipse(self, x, y, width, height,
-                     bordercolor=None, fillcolor=None, border=1, alpha_enable=False):
+                     bordercolor=None, fillcolor=None,
+                     border=1, alpha_enable=False, **kwignores):
         ''' draw ellipse with border '''
         if fillcolor is not None:
             def _context(draw):
@@ -158,14 +160,16 @@ class CardCanvas:
                 self._alpha_context(_context, alpha_enable)
 
     def draw_line(self, x1, y1, x2, y2, color,
-                  width=1, alpha_enable=False):
+                  width=1, alpha_enable=False, **kwignores):
         ''' draw ellipse with border '''
         def _context(draw):
             xy = [x1, y1, x2, y2]
             draw.line(xy, fill=color, width=width)
         self._alpha_context(_context, alpha_enable)
 
-    def draw_image(self, image, x, y, width=None, height=None, centerize=False):
+    def draw_image(self, image, x, y,
+                   width=None, height=None,
+                   centerize=False, **kwignores):
         ''' put image (PIL.Image) on this canvas as (x, y, width, height) size '''
         if (width is not None) and (height is not None):
             size = (width, height)
