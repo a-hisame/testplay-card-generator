@@ -5,7 +5,6 @@ import os
 import csv
 import codecs
 import logging
-import traceback
 
 import yaml
 from dotmap import DotMap
@@ -27,21 +26,19 @@ class TestCardGeneratorEngine:
     ''' Create testplay card printing file from layout configuration and data source '''
 
     @staticmethod
-    def run(layoutfile, datafile, output, is_quiet=False):
+    def run(layoutfile, datafile, output, is_quiet=False, dryrun=False):
         ''' Most basically usage '''
-        try:
-            engine = TestCardGeneratorEngine.load(layoutfile, is_quiet)
-            records = TestCardGeneratorEngine.csv2records(datafile)
-            engine.save(output, records)
-        except:
-            traceback.print_exc()
+        engine = TestCardGeneratorEngine.load(layoutfile, is_quiet, dryrun)
+        records = TestCardGeneratorEngine.csv2records(datafile)
+        engine.save(output, records)
 
     @staticmethod
-    def load(ymlpath, is_quiet=False, encoding='utf8'):
+    def load(ymlpath, is_quiet=False, dryrun=False, encoding='utf8'):
         ''' engine instance factory method '''
         with codecs.open(ymlpath, 'r', encoding=encoding) as fh:
             layout = yaml.load(fh)
-        return TestCardGeneratorEngine(layout=layout, is_quiet=is_quiet)
+        return TestCardGeneratorEngine(
+            layout=layout, is_quiet=is_quiet, dryrun=dryrun)
 
     @staticmethod
     def csv2records(csvpath, encoding='utf8'):
@@ -50,9 +47,11 @@ class TestCardGeneratorEngine:
             reader = csv.DictReader(fh)
             return [row for row in reader]
 
-    def __init__(self, layout=None, is_quiet=False):
+    def __init__(self, layout=None, is_quiet=False, dryrun=False):
         ''' not recommend to use constractor directly, use TestCardGeneratorEngine.load'''
         self.definition = DotMap(layout)
+
+        # build engine console
         self.is_quiet = is_quiet
         if is_quiet:
             def _console(*arvg, **kwargv):
@@ -60,6 +59,17 @@ class TestCardGeneratorEngine:
             self.console = _console
         else:
             self.console = print
+
+        # build dryrun engine
+        self.dryrun = dryrun
+
+        def _dryrun_wrapper(name, func):
+            if not self.dryrun:
+                func()
+            else:
+                self.console('dryrun: {}'.format(name))
+
+        self.dryrun_wrapper = _dryrun_wrapper
 
     def _draw_image(self, canvas, layer, filename):
         imagefile = layer.source if layer.source else filename
@@ -231,8 +241,11 @@ class TestCardGeneratorEngine:
         If you want to use tile layout, set w and h more than 1. '''
         for (page_no, image) in enumerate(self.render_all(records, w, h), start=1):
             filename = '{0}{1:04d}.png'.format(filename_without_ext, page_no)
-            image.save(filename, 'PNG')
+            self.dryrun_wrapper(
+                'save {}'.format(filename),
+                lambda: image.save(filename, 'PNG'))
         self.console('- save all png images succeeded')
+        return True
 
     def save_as_pdf(self, filename, records, w=3, h=3):
         ''' Save a pdf file.
@@ -242,9 +255,10 @@ class TestCardGeneratorEngine:
         pages = self.render_all(records, w, h)
         if len(pages) <= 0:
             pdf.showPage()  # insert empty page
-            pdf.save()
+            self.dryrun_wrapper(
+                'save {}'.format(filename), lambda: pdf.save())
             self.console('.', end='', flush=True)
-            return
+            return True
 
         # small edge is based to print
         is_width_based = (A4[0] / pages[0].width < A4[1] / pages[0].height)
@@ -269,15 +283,17 @@ class TestCardGeneratorEngine:
             # write
             pdf.drawInlineImage(image, x, y, width=width, height=height)
 
-        pdf.save()
+        self.dryrun_wrapper(
+            'save {}'.format(filename), lambda: pdf.save())
         self.console('- save pdf succeeded')
+        return True
 
     def save(self, filename, records):
         ''' Create resouces and save them following setting file '''
         self.console('start: Testplay Card Generator')
         w = self.definition.output.tile.get('width', 3)
         h = self.definition.output.tile.get('height', 3)
-        file_format = self.definition.output.format
+        file_format = self.definition.output.get('format', 'pdf')
         if file_format == 'pdf':
             self.console(
                 '- target file and format: {f} (pdf)'.format(f=filename))

@@ -57,17 +57,6 @@ class CardCanvas:
                 line = line[right:]
         return '\n'.join(results)
 
-    def _alpha_context(self, context, alpha_enable):
-        ''' Draw with transparent mode '''
-        if alpha_enable:
-            image = Image.new(mode='RGBA', size=self.size,
-                              color=(255, 255, 255, 0))
-            draw = ImageDraw.Draw(image)
-            context(draw)
-            self.image.alpha_composite(image)
-        else:
-            context(self.draw)
-
     def draw_text(self, text, x, y, color,
                   maxwidth=None, maxheight=None,
                   breakseparator='', bold=False,
@@ -126,6 +115,17 @@ class CardCanvas:
             self.draw.multiline_text(
                 xy, text, font=bestfont, fill=shadowcolor)
         self.draw.multiline_text((x, y), text, font=bestfont, fill=color)
+
+    def _alpha_context(self, context, alpha_enable):
+        ''' Draw with transparent mode '''
+        if alpha_enable:
+            image = Image.new(mode='RGBA', size=self.size,
+                              color=(255, 255, 255, 0))
+            draw = ImageDraw.Draw(image)
+            context(draw)
+            self.image.alpha_composite(image)
+        else:
+            context(self.draw)
 
     def draw_rect(self, x, y, width, height,
                   bordercolor=None, fillcolor=None, border=1, alpha_enable=False):

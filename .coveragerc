@@ -1,0 +1,13 @@
+[run]
+branch = True
+source = tcgen
+
+[report]
+exclude_lines =
+    if __name__ == .__main__.:
+    if not self.dryrun:
+    if not dryrun:
+ignore_errors = True
+omit =
+    tcgen/__init__.py
+    */tests/*

@@ -18,3 +18,13 @@ except ImportError:
     import mock
 
 from nose.tools import eq_, ok_
+
+
+def call_(val):
+    ''' procedure (means does not have valid return value) call test simple wrapper '''
+    pass
+
+
+def datapath(filename):
+    ''' return absolute path for unittest localfile '''
+    return os.path.join(os.path.dirname(__file__), 'data', filename)
