@@ -4,7 +4,7 @@
 [![codecov](https://codecov.io/gh/a-hisame/testplay-card-generator/branch/master/graph/badge.svg)](https://codecov.io/gh/a-hisame/testplay-card-generator)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](LICENSE)
 
-=> [日本語で読みたい方はこちら(README_ja.md).
+[->日本語で読みたい方はこちら](README_ja.md).
 
 ```
 Note: Not it is alpha version so documentation is not completed.
