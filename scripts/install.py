@@ -24,7 +24,7 @@ _run('pip install {}'.format(
 
 
 # pack to wheel
-if os.listdir('dist') and os.path.isdir('dist'):
+if all([os.path.exists('dist'), os.path.isdir('dist')]):
     shutil.rmtree('dist')
 _run('python setup.py bdist_wheel')
 
