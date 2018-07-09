@@ -1,22 +1,22 @@
 # testcard-generator card layout file
 output: # set output format
   tile: # for tile layout
-    width: 3       # (default: 3) a page row has <width> cards
-    height: 3      # (default: 3) a page column has <height> cards
-    scale: 0.90    # (default: 0.9) only PDF format.
-                   # cards puts on a page as well as filled automatically.
-                   # if scale = 1, images set width or height as same as PDF page width or height.
-                   # scale parameter can adjust size by times <scale> and shrink (<scale> < 1.0)
-    interspace: 10 # (default: 10) make <interspace> pixels between each cards.
-    lu: normal     # (default: normal) left-upper point. normal or center are available.
-  format: pdf      # (default: pdf) save format. pdf or png are available.
+    width: 3            # (default: 3) a page row has <width> cards
+    height: 3           # (default: 3) a page column has <height> cards
+    scale: 0.90         # (default: 0.9) only PDF format.
+                        # cards puts on a page as well as filled automatically.
+                        # if scale = 1, images set width or height as same as PDF page width or height.
+                        # scale parameter can adjust size by times <scale> and shrink (<scale> < 1.0)
+    interspace: 10      # (default: 10) make <interspace> pixels between each cards.
+    left_upper: normal  # (default: normal) left-upper point. normal or center are available.
+  format: pdf           # (default: pdf) save format. pdf or png are available.
 card: # a card definitions
-  size: # 150dpi = 372 x 520 as default
+  size:                 # TCG card size 63mm x 88mm (150dpi) = 372 x 520 as default
     width: 372
     height: 520
   border:
-    width: 2          # (default: 2) draw border line for a card (if you want to ignore, set 0)
-    color: '#000000'  # (default: #000000) border line drawing color
+    width: 2            # (default: 2) draw border line for a card (if you want to ignore, set 0)
+    color: '#000000'    # (default: #000000) border line drawing color
   layers:
     # render contents from top to bottom (overwrite)
     # -------------------------------------------------------------------------------------------------------
@@ -36,11 +36,11 @@ card: # a card definitions
       height: 80                  # image width (expands and shrinks)
     # -------------------------------------------------------------------------------------------------------
     - name: VP                    # name to understand
-      type: linetext              # [required] one-line centerized text drawing
+      type: title                 # [required] one-line centerized text drawing
       ref: vp                     # read text from data source "vp" column for each card
       x: 45                       # (default: 0) left-top x-origin
       y: 20                       # (default: 0) left-top y-origin
-      width: 60                  # [required] string width
+      width: 60                   # [required] string width
       height: 80                  # [required] string height
       maxfontsize: 60             # (default: 24) maximum font size. if out of bounds, font will be shrinked
       bold: yes                   # (default: no) bold fort or not
@@ -61,7 +61,7 @@ card: # a card definitions
       border: 1                   # (default: 0) if you want to set border width pixel, set here
     # -------------------------------------------------------------------------------------------------------
     - name: titletext             # name to understand
-      type: linetext              # [required] one-line centerized text drawing
+      type: title                 # [required] one-line centerized text drawing
       ref: title                  # read text from data source "vp" column for each card
       x: 130                      # (default: 0) left-top x-origin
       y: 20                       # (default: 0) left-top y-origin
