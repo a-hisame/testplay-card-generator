@@ -1,8 +1,11 @@
 language: python
 python:
-  - "3.6"
+- '3.6'
 install:
-  - python scripts/install.py requirements-dev.txt
+- python scripts/install.py requirements-dev.txt
 script: nosetests -s --exe
 branches:
-  except: /^(feature|try).*$/
+  except: "/^(feature|try).*$/"
+notifications:
+  slack:
+    secure: REPV3xbcB7aMeZ3JLH4d8tGvOl092NrF16zskCWGu4Cs7PA23fB5wqV0ihOW1SeoCCYwGixcsuRTcZEqIiLagXx2u+E23D9d1O5Z7WEEHvLavyMZ01MAIJk3FqZrXRCV27CMg7WpYiXzpZT/VjZ+592mItcqoLYS8j+dVNwEtPnkYLa8SOWMMai2JPGN4YR7jGS4ysUk9zDVG95kM5+5zvsqCFHrDy9HqpcAhYGjhDK8+ihR22bpNn2Q/Nl4+j1CZsvx5Se4PJypX8MohCCCODD6l5BOTAEEHGM9gms1fmqbbHT9aRj97oA0S6CtnWM6y+HAyPggulLGsWUyfvEdQb1dRX78ChK2hi/NW71qoRLd1HG1ljtT07U3e6wFQ8dDnSwPsLKekex7YIqMNXyZrc9v3QZrpZYLguRY1SC5CD7uwRLLrPI1hwI2ZBvDXwxp61GR5fDkHpI+5q/DZQfQ2Qhol/mNjwwQOJu2koVECxwJFyQA22/+ARWucbRiRBmYUj9yX5lOdgnukEF2ADIe5kUnZ5upaaWwD2GjuccSMIwcBlGP8du3Fst9eKvVUUgD0MzigEK+i+TBGV+krSCgSlkQr7XpH5iQB+D3zp81nzSmai4zgLjaeqP85qirlvASgqCVUH1ztEDY8mxaWylfsxr5E/mFWzrADW9HtQSaJlU=
