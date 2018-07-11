@@ -17,9 +17,11 @@ class EngineTest(unittest.TestCase):
             'output.pdf', is_quiet=True, dryrun=True)
         TestCardGeneratorEngine.run(
             datapath('min-layout.yml'), datapath('min-data.csv'),
-            'output.pdf', is_quiet=False, dryrun=True)
+            'output.png', from_index=0, to_index=1,
+            is_quiet=False, dryrun=True)
 
-    def _test_engine(self, format='pdf', left_upper='normal', size=None, layers=None, border=2):
+    def _test_engine(self, format='pdf', left_upper='normal', size=None, layers=None, border=2,
+                     renderonly_ref=None, renderonly_values=None):
         return TestCardGeneratorEngine({
             'output': dict(
                 format=format,
@@ -29,6 +31,7 @@ class EngineTest(unittest.TestCase):
                 size=dict(width=size[0], height=size[1]) if size else None,
                 border=dict(width=border),
                 layers=layers if layers else [],
+                render_only=dict(ref=renderonly_ref, values=renderonly_values)
             )
         }, is_quiet=False, dryrun=True)
 
@@ -75,6 +78,29 @@ class EngineTest(unittest.TestCase):
         self.assertRaises(
             ValueError,
             lambda: e1.save_as_images('output', rows, w=-1, h=-1))
+
+    def test_renderonly(self):
+        rows = [
+            dict(header='value1'), dict(header='value2'),
+            dict(header='value3'), dict(header='value4'),
+            dict(header=10), dict(header='10'),
+        ]
+        # render all
+        e1 = self._test_engine(renderonly_ref='header')
+        eq_(len(e1.render_all(rows, w=1, h=1)), 6)
+
+        # render if and only if header = value1
+        e2 = self._test_engine(renderonly_ref='header',
+                               renderonly_values='value1')
+        eq_(len(e2.render_all(rows, w=1, h=1)), 1)
+
+        # render if and only if header in [values2, values4, values5]
+        e3 = self._test_engine(renderonly_ref='header',
+                               renderonly_values=['value2', 'value4', 'value3'])
+        eq_(len(e3.render_all(rows, w=1, h=1)), 3)
+
+        e4 = self._test_engine(renderonly_ref='header', renderonly_values=10)
+        eq_(len(e4.render_all(rows, w=1, h=1)), 2)
 
     def test_render(self):
         test_render_layers = [

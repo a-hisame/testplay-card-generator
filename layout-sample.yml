@@ -9,7 +9,7 @@ output: # set output format
                         # scale parameter can adjust size by times <scale> and shrink (<scale> < 1.0)
     interspace: 10      # (default: 10) make <interspace> pixels between each cards.
     left_upper: normal  # (default: normal) left-upper point. normal or center are available.
-  format: pdf           # (default: pdf) save format. pdf or png are available.
+  format: pdf           # (default: pdf) save format without output parameter. pdf or png are available.
 card: # a card definitions
   size:                 # TCG card size 63mm x 88mm (150dpi) = 372 x 520 as default
     width: 372
@@ -17,6 +17,10 @@ card: # a card definitions
   border:
     width: 2            # (default: 2) draw border line for a card (if you want to ignore, set 0)
     color: '#000000'    # (default: #000000) border line drawing color
+  render_only:          # (defalut: no) needs skip condition from row element
+    ref: icon           # only rows contains icon in the values are rendered
+    values:
+      - sample/icon01.png
   layers:
     # render contents from top to bottom (overwrite)
     # -------------------------------------------------------------------------------------------------------
