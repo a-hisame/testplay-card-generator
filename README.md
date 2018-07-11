@@ -44,15 +44,21 @@ this project generates following image(s) and PDF file.
 
 I tested it on ubuntu 18.04 and Python 3.6.5 (virtualenv).
 
+### You are just user
+
 ```
-# setup virtualenv
+# only use and install
+pip install git+https://github.com/a-hisame/testplay-card-generator.git
+```
+
+### For Developer
+
+```
+# setup virtualenv if needed
 virtualenv .venv
 source .venv/bin/activate
 
-# only use and install
-python scripts/install.py
-
-# if you are developer, needs to install development tools additionally
+# needs to install development tools additionally
 python scripts/install.py requirements-dev.txt
 ```
 

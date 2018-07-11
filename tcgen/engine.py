@@ -22,11 +22,14 @@ class TestCardGeneratorEngine:
     ''' Create testplay card printing file from layout configuration and data source '''
 
     @staticmethod
-    def run(layoutfile, datafile, output, is_quiet=False, dryrun=False):
+    def run(layoutfile, datafile, output,
+            from_index=0, to_index=None, is_quiet=False, dryrun=False):
         ''' Most basically usage '''
         engine = TestCardGeneratorEngine.load(layoutfile, is_quiet, dryrun)
         records = TestCardGeneratorEngine.csv2records(datafile)
-        engine.save(output, records)
+        if to_index is None:
+            to_index = len(records)
+        engine.save(output, records[from_index:to_index])
 
     @staticmethod
     def load(ymlpath, is_quiet=False, dryrun=False, encoding='utf8'):
@@ -165,12 +168,12 @@ class TestCardGeneratorEngine:
         key = layer.ref if 'ref' in layer else name
         return record.get(key)
 
-    def _skip_rendering(self, layer, content):
+    def _skip_rendering(self, layer, record, content):
         ''' return render should be skipped or not '''
         if layer.get('always'):
             # if always set, to render anyway
             return (False, '')
-        if content is None:
+        if content in [None, '']:
             return (True, 'content for rendring not found')
         return (False, '')
 
@@ -190,7 +193,7 @@ class TestCardGeneratorEngine:
                 logger.warn('skipped: (%s, %s) is not implemented', idx, name)
                 continue
             content = self._get_content(name, layer, record)
-            (is_skip, skip_reason) = self._skip_rendering(layer, content)
+            (is_skip, skip_reason) = self._skip_rendering(layer, record, content)
             if is_skip:
                 logger.debug('skipped: layer %s rendering skipped (reason: %s)',
                              name, skip_reason)
@@ -201,7 +204,9 @@ class TestCardGeneratorEngine:
                              name, layer.type))
                 render_impl(canvas, layer, content)
             except Exception as e:
-                logger.exception(e)
+                self.console('command failed so skipped: name={}, type={}'.format(
+                    name, layer.type))
+                # logger.exception(e)
 
         # draw card border
         border = self.definition.card.border.get('width', 2)
@@ -228,15 +233,34 @@ class TestCardGeneratorEngine:
             image.alpha_composite(card, dest=dest)
         return image
 
+    def _is_render_cards(self, record):
+        ''' a card itself should be rendered or not '''
+        ref = self.definition.card.render_only.get('ref')
+        if ref is None:
+            return True
+        values = self.definition.card.render_only.get('values', None)
+        if values is None:
+            return True
+
+        def comp(obj):
+            return str(record.get(ref)) == str(obj)
+
+        if isinstance(values, list):
+            return any([comp(v) for v in values])
+        else:
+            return comp(values)
+
     def render_all(self, records, w=3, h=3):
         ''' Generate card image list by using config and each record data.
         It returns list of PIL.Image object which was located as tile layout w x h.  '''
         if w < 1 or h < 1:
             raise ValueError('w and h are 1 or more than 1')
-        self.console('- generate card count: {n}'.format(n=len(records)))
-        (cards, pages) = ([], [])
+        self.console('- generate card candidates: {n}'.format(n=len(records)))
+        (rendered, cards, pages) = (0, [], [])
         for record in records:
-            cards.append(self.render(record))
+            if self._is_render_cards(record):
+                cards.append(self.render(record))
+                rendered = rendered + 1
             if len(cards) >= w * h:
                 pages.append(self._composite_as_tile(cards, w, h))
                 cards = []
@@ -244,7 +268,8 @@ class TestCardGeneratorEngine:
         if len(cards) > 0:
             pages.append(self._composite_as_tile(cards, w, h))
         self.console('')
-        self.console('- generated, total page = {n}'.format(n=len(pages)))
+        self.console('- generated, rendered = {}, total page = {}'.format(
+            rendered, len(pages)))
         return pages
 
     def save_as_images(self, filename_without_ext, records, w=3, h=3):
@@ -299,12 +324,18 @@ class TestCardGeneratorEngine:
         self.console('- save pdf succeeded')
         return True
 
+    def _output_ext(self, filename):
+        (basename, ext) = os.path.splitext(filename)
+        if ext.lower() in ['.pdf', '.png']:
+            return ext.lower()[1:]
+        return self.definition.output.get('format', 'pdf')
+
     def save(self, filename, records):
         ''' Create resouces and save them following setting file '''
         self.console('start: Testplay Card Generator')
         w = self.definition.output.tile.get('width', 3)
         h = self.definition.output.tile.get('height', 3)
-        file_format = self.definition.output.get('format', 'pdf')
+        file_format = self._output_ext(filename)
         if file_format == 'pdf':
             self.console(
                 '- target file and format: {f} (pdf)'.format(f=filename))
