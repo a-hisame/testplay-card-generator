@@ -23,13 +23,16 @@ class TestCardGeneratorEngine:
 
     @staticmethod
     def run(layoutfile, datafile, output,
-            from_index=0, to_index=None, is_quiet=False, dryrun=False):
+            from_index=0, to_index=None, for_data=False, is_quiet=False, dryrun=False):
         ''' Most basically usage '''
         engine = TestCardGeneratorEngine.load(layoutfile, is_quiet, dryrun)
         records = TestCardGeneratorEngine.csv2records(datafile)
         if to_index is None:
             to_index = len(records)
-        engine.save(output, records[from_index:to_index])
+        if for_data:
+            engine.save_single_images(output, records[from_index:to_index])
+        else:
+            engine.save(output, records[from_index:to_index])
 
     @staticmethod
     def load(ymlpath, is_quiet=False, dryrun=False, encoding='utf8'):
@@ -347,3 +350,11 @@ class TestCardGeneratorEngine:
             return self.save_as_images(basename, records, w, h)
         raise ValueError(
             'Setting file format is wrong, only "pdf" and "png" are supported. ')
+
+    def save_single_images(self, filename, records):
+        ''' Create resouces and save them following setting file '''
+        self.console('start: Testplay Card Generator (Single Card Mode)')
+        (basename, _) = os.path.splitext(filename)
+        self.console(
+            '- target file and format: {f}0000.png (png)'.format(f=basename))
+        return self.save_as_images(basename, records, 1, 1)
