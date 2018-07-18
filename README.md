@@ -87,7 +87,7 @@ Layout File describe what are drawn and used from data file.
 ## Data File
 
 It is CSV format and each row data is mapped for a card.
-If you want to make the cards, read `layout-sample.yml` and `data.csv` and make yourself contents.
+If you want to make the cards, read `layout-sample.yml` and `data.csv` , after that to make yourself contents.
 
 
 ## LICENSE

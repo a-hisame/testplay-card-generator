@@ -42,18 +42,23 @@ Note: このプロジェクトは開発途中のαバージョンであり、ド
 
 ubuntu 18.04 上の Python 3.6.5 (virtualenv) で動作を確認しています。
 
+### ただ使いたいだけなら
+
 ```
-# setup virtualenv
+# only use and install
+pip install git+https://github.com/a-hisame/testplay-card-generator.git
+```
+
+### 開発をしたいのであれば
+
+```
+# setup virtualenv if needed
 virtualenv .venv
 source .venv/bin/activate
 
-# only use and install
-python scripts/install.py
-
-# if you are developer, needs to install development tools additionally
+# needs to install development tools additionally
 python scripts/install.py requirements-dev.txt
 ```
-
 
 ## カード生成のための準備
 
