@@ -19,6 +19,10 @@ class EngineTest(unittest.TestCase):
             datapath('min-layout.yml'), datapath('min-data.csv'),
             'output.png', from_index=0, to_index=1,
             is_quiet=False, dryrun=True)
+        TestCardGeneratorEngine.run(
+            datapath('min-layout.yml'), datapath('min-data.csv'),
+            'output.png', from_index=0, to_index=1,
+            for_data=True, is_quiet=False, dryrun=True)
 
     def _test_engine(self, format='pdf', left_upper='normal', size=None, layers=None, border=2,
                      renderonly_ref=None, renderonly_values=None):

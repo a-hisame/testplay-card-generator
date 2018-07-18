@@ -29,6 +29,8 @@ def _parse_args(argv):
                         help='output start index (start is 0, as default)')
     parser.add_argument('--to-index', type=int, default=None,
                         help='output end index (if not set, all data is output)')
+    parser.add_argument('--for-data', action='store_true',
+                        help='If enabled, format is changed for .png and all of cards are output.')
     parser.add_argument('--quiet', action='store_true',
                         help='If enabled, no output the progress')
     parser.add_argument('--dryrun', action='store_true',
@@ -41,7 +43,7 @@ def main(argv=sys.argv[1:]):
     TestCardGeneratorEngine.run(
         layoutfile=args.layout, datafile=args.data, output=args.output,
         from_index=args.from_index, to_index=args.to_index,
-        is_quiet=args.quiet, dryrun=args.dryrun)
+        for_data=args.for_data, is_quiet=args.quiet, dryrun=args.dryrun)
 
 
 if __name__ == '__main__':

@@ -15,7 +15,7 @@ with codecs.open(os.path.join(here, 'requirements.txt'), 'r') as fh:
 
 setup(
     name='tcgen',
-    version='0.0.2',
+    version='0.0.3',
     packages=find_packages(exclude=['tests', 'tests.*', 'docs']),
     install_requires=requirements,
     data_files=[
